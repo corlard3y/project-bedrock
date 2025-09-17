@@ -1,0 +1,33 @@
+terraform {
+  required_version = ">= 1.3.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+
+  # Optional: uncomment for remote state (requires S3/DynamoDB created)
+  # backend "s3" {
+  #   bucket = "project-bedrock-tfstate-<YOUR-UNIQUE-BUCKET>"
+  #   key    = "terraform/state.tfstate"
+  #   region = var.aws_region
+  # }
+}
+
+provider "aws" {
+  region = var.aws_region
+}
+
+# Recommended timeout for EKS creation
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.this.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.this.token
+  load_config_file       = false
+}
+
+data "aws_caller_identity" "current" {}
+data "aws_eks_cluster_auth" "this" {
+  name = data.aws_eks_cluster.this.name
+}
