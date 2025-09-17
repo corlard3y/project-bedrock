@@ -22,6 +22,7 @@ kubectl apply -f namespace.yaml
 echo "⚙️  Applying configurations..."
 kubectl apply -f managed-db-configmap.yaml
 kubectl apply -f managed-db-secrets.yaml
+kubectl apply -f rbac.yaml
 
 # Deploy ALB Ingress Controller
 echo "🌐 Deploying AWS Load Balancer Controller..."

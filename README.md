@@ -5,10 +5,11 @@ Deploy the official [AWS Retail Store Sample App](https://github.com/aws-contain
 ## 🚀 Quick Start
 
 ### Prerequisites
-- AWS CLI configured with your `johndoe` user
+- AWS CLI configured with `johndoe` user
 - Terraform >= 1.3.0
 - kubectl
 - Git
+- AWS user must have EKS cluster access permissions
 
 ### Deploy Everything
 ```bash
@@ -111,9 +112,10 @@ project-bedrock/
 
 ## 🔐 Security & Access
 
-### IAM Users
-- **johndoe**: Your existing user (correct approach!)
-- **dev-readonly**: Read-only developer access
+### IAM Users & EKS Access
+- **johndoe**: My existing user with admin access to EKS cluster
+- **dev-readonly**: Read-only developer access with proper RBAC permissions
+- **EKS Access**: Both users are mapped to the cluster with appropriate permissions
 
 ### Developer Access
 ```bash

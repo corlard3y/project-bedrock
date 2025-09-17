@@ -22,6 +22,7 @@ kubectl apply -f namespace.yaml
 echo "⚙️  Applying configurations..."
 kubectl apply -f configmap.yaml
 kubectl apply -f secrets.yaml
+kubectl apply -f rbac.yaml
 
 # Deploy databases
 echo "🗄️  Deploying databases..."
