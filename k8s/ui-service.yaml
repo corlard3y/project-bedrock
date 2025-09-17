@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: ui-service
-        image: nginx:alpine
+        image: public.ecr.aws/aws-containers/retail-store-sample-ui:1.0.0
         ports:
         - containerPort: 80
         resources:

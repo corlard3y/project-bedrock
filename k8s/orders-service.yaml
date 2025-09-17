@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: orders-service
-        image: nginx:alpine
+        image: public.ecr.aws/aws-containers/retail-store-sample-orders:1.0.0
         ports:
         - containerPort: 80
         env:

@@ -1,6 +1,6 @@
-# Project Bedrock - Retail Store Microservices on AWS EKS
+# Project Bedrock - AWS Retail Store Sample App on EKS
 
-Production-grade microservices application deployed on Amazon EKS with Infrastructure as Code and CI/CD automation.
+Deploy the official [AWS Retail Store Sample App](https://github.com/aws-containers/retail-store-sample-app) to Amazon EKS with Infrastructure as Code and CI/CD automation.
 
 ## 🚀 Quick Start
 
@@ -47,11 +47,12 @@ VPC (10.0.0.0/16)
 ├── Public Subnets (ALB, NAT)
 ├── Private Subnets (EKS, RDS)
 └── EKS Cluster
-    ├── UI Service (LoadBalancer)
-    ├── Catalog Service (MySQL)
-    ├── Orders Service (PostgreSQL)
-    ├── Carts Service (Redis)
-    └── RabbitMQ (Message Queue)
+    ├── UI Service (Java) - Store frontend
+    ├── Catalog Service (Go) - Product catalog API
+    ├── Orders Service (Java) - Order management API
+    ├── Carts Service (Java) - Shopping cart API
+    ├── Checkout Service (Node.js) - Checkout orchestration
+    └── Databases: MySQL, PostgreSQL, Redis, RabbitMQ
 ```
 
 ## 📁 Project Structure
@@ -77,10 +78,11 @@ project-bedrock/
 │   ├── postgres.yaml   # PostgreSQL database
 │   ├── redis.yaml      # Redis cache
 │   ├── rabbitmq.yaml   # Message broker
-│   ├── catalog-service.yaml  # Product catalog
-│   ├── orders-service.yaml   # Order management
-│   ├── carts-service.yaml    # Shopping cart
-│   ├── ui-service.yaml       # Frontend
+│   ├── catalog-service.yaml  # Product catalog (Go)
+│   ├── orders-service.yaml   # Order management (Java)
+│   ├── carts-service.yaml    # Shopping cart (Java)
+│   ├── checkout-service.yaml # Checkout orchestration (Node.js)
+│   ├── ui-service.yaml       # Store frontend (Java)
 │   ├── alb-ingress-controller.yaml  # ALB Controller (Bonus)
 │   ├── ingress.yaml    # ALB Ingress (Bonus)
 │   ├── managed-db-configmap.yaml    # Managed DB config (Bonus)
@@ -91,6 +93,21 @@ project-bedrock/
 │   └── terraform-ci-cd.yml
 └── README.md
 ```
+
+## 🔧 AWS Retail Store Sample App Components
+
+### Microservices
+- **UI Service** (Java): Store frontend with themes and topology information
+- **Catalog Service** (Go): Product catalog API with MySQL backend
+- **Orders Service** (Java): Order management API with PostgreSQL backend
+- **Carts Service** (Java): Shopping cart API with Redis backend
+- **Checkout Service** (Node.js): Checkout orchestration with RabbitMQ
+
+### Infrastructure Services
+- **MySQL**: Product catalog database
+- **PostgreSQL**: Orders database
+- **Redis**: Caching and session storage
+- **RabbitMQ**: Message queuing
 
 ## 🔐 Security & Access
 

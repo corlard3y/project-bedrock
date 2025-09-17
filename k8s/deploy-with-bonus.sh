@@ -32,10 +32,11 @@ echo "⏳ Waiting for ALB controller to be ready..."
 kubectl wait --for=condition=available --timeout=300s deployment/aws-load-balancer-controller -n kube-system
 
 # Deploy microservices (using managed databases)
-echo "🔧 Deploying microservices with managed databases..."
+echo "🔧 Deploying retail store microservices with managed databases..."
 kubectl apply -f catalog-service.yaml
 kubectl apply -f orders-service.yaml
 kubectl apply -f carts-service.yaml
+kubectl apply -f checkout-service.yaml
 kubectl apply -f ui-service.yaml
 
 # Wait for services to be ready
@@ -43,6 +44,7 @@ echo "⏳ Waiting for services to be ready..."
 kubectl wait --for=condition=available --timeout=300s deployment/catalog-service -n retail-store
 kubectl wait --for=condition=available --timeout=300s deployment/orders-service -n retail-store
 kubectl wait --for=condition=available --timeout=300s deployment/carts-service -n retail-store
+kubectl wait --for=condition=available --timeout=300s deployment/checkout-service -n retail-store
 kubectl wait --for=condition=available --timeout=300s deployment/ui-service -n retail-store
 
 # Deploy Ingress

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: carts-service
-        image: nginx:alpine
+        image: public.ecr.aws/aws-containers/retail-store-sample-cart:1.0.0
         ports:
         - containerPort: 80
         env:

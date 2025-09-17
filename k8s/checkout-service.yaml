@@ -1,51 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalog-service
+  name: checkout-service
   namespace: retail-store
   labels:
-    app: catalog-service
+    app: checkout-service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: catalog-service
+      app: checkout-service
   template:
     metadata:
       labels:
-        app: catalog-service
+        app: checkout-service
     spec:
       containers:
-      - name: catalog-service
-        image: public.ecr.aws/aws-containers/retail-store-sample-catalog:1.0.0
+      - name: checkout-service
+        image: public.ecr.aws/aws-containers/retail-store-sample-checkout:1.0.0
         ports:
         - containerPort: 80
         env:
-        - name: MYSQL_HOST
+        - name: RABBITMQ_HOST
           valueFrom:
             configMapKeyRef:
               name: retail-store-config
-              key: MYSQL_HOST
-        - name: MYSQL_PORT
+              key: RABBITMQ_HOST
+        - name: RABBITMQ_PORT
           valueFrom:
             configMapKeyRef:
               name: retail-store-config
-              key: MYSQL_PORT
-        - name: MYSQL_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: retail-store-config
-              key: MYSQL_DATABASE
-        - name: MYSQL_USER
+              key: RABBITMQ_PORT
+        - name: RABBITMQ_USER
           valueFrom:
             secretKeyRef:
               name: retail-store-secrets
-              key: MYSQL_USER
-        - name: MYSQL_PASSWORD
+              key: RABBITMQ_USER
+        - name: RABBITMQ_PASSWORD
           valueFrom:
             secretKeyRef:
               name: retail-store-secrets
-              key: MYSQL_PASSWORD
+              key: RABBITMQ_PASSWORD
         resources:
           requests:
             memory: "128Mi"
@@ -69,11 +64,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: catalog-service
+  name: checkout-service
   namespace: retail-store
 spec:
   selector:
-    app: catalog-service
+    app: checkout-service
   ports:
   - port: 80
     targetPort: 80

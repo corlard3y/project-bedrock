@@ -47,3 +47,10 @@ spec:
             name: carts-service
             port:
               number: 80
+      - path: /checkout
+        pathType: Prefix
+        backend:
+          service:
+            name: checkout-service
+            port:
+              number: 80

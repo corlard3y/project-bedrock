@@ -38,10 +38,11 @@ kubectl wait --for=condition=available --timeout=300s deployment/redis -n retail
 kubectl wait --for=condition=available --timeout=300s deployment/rabbitmq -n retail-store
 
 # Deploy microservices
-echo "🔧 Deploying microservices..."
+echo "🔧 Deploying retail store microservices..."
 kubectl apply -f catalog-service.yaml
 kubectl apply -f orders-service.yaml
 kubectl apply -f carts-service.yaml
+kubectl apply -f checkout-service.yaml
 kubectl apply -f ui-service.yaml
 
 # Wait for services to be ready
@@ -49,6 +50,7 @@ echo "⏳ Waiting for services to be ready..."
 kubectl wait --for=condition=available --timeout=300s deployment/catalog-service -n retail-store
 kubectl wait --for=condition=available --timeout=300s deployment/orders-service -n retail-store
 kubectl wait --for=condition=available --timeout=300s deployment/carts-service -n retail-store
+kubectl wait --for=condition=available --timeout=300s deployment/checkout-service -n retail-store
 kubectl wait --for=condition=available --timeout=300s deployment/ui-service -n retail-store
 
 echo "✅ Deployment completed successfully!"
