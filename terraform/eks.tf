@@ -1,6 +1,6 @@
 module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  version         = "20.8.5"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "20.8.5"
 
   cluster_name    = "project-bedrock-eks"
   cluster_version = "1.32"
@@ -10,27 +10,11 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  manage_aws_auth = true
-
-  # Map users to the EKS cluster with proper access
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/johndoe"
-      username = "johndoe"
-      groups   = ["system:masters"]
-    },
-    {
-      userarn  = aws_iam_user.dev_readonly.arn
-      username = aws_iam_user.dev_readonly.name
-      groups   = ["system:authenticated"]
-    }
-  ]
-
   eks_managed_node_groups = {
     default = {
       desired_capacity = 2
-      min_size         = 2
-      max_size         = 3
+      min_size         = 1
+      max_size         = 5
       instance_types   = ["t3.medium"]
       capacity_type    = "ON_DEMAND"
     }
@@ -43,6 +27,31 @@ module "eks" {
 
 # Data source to get the EKS cluster created by the module
 data "aws_eks_cluster" "this" {
-  name = module.eks.cluster_name
+  name       = module.eks.cluster_name
+  depends_on = [module.eks]
+}
+
+# AWS auth configmap for EKS cluster access
+resource "kubernetes_config_map" "aws_auth" {
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+
+  data = {
+    mapUsers = yamlencode([
+      {
+        userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/johndoe"
+        username = "johndoe"
+        groups   = ["system:masters"]
+      },
+      {
+        userarn  = aws_iam_user.dev_readonly.arn
+        username = aws_iam_user.dev_readonly.name
+        groups   = ["system:authenticated"]
+      }
+    ])
+  }
+
   depends_on = [module.eks]
 }
