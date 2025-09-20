@@ -7,12 +7,6 @@ terraform {
     }
   }
 
-  # Optional: uncomment for remote state (requires S3/DynamoDB created)
-  # backend "s3" {
-  #   bucket = "project-bedrock-tfstate-<YOUR-UNIQUE-BUCKET>"
-  #   key    = "terraform/state.tfstate"
-  #   region = var.aws_region
-  # }
 }
 
 provider "aws" {
@@ -20,7 +14,6 @@ provider "aws" {
   profile = "project-bedrock"
 }
 
-# Recommended timeout for EKS creation
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.this.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)

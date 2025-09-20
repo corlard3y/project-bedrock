@@ -31,7 +31,6 @@ data "aws_eks_cluster" "this" {
   depends_on = [module.eks]
 }
 
-# AWS auth configmap for EKS cluster access
 resource "kubernetes_config_map" "aws_auth" {
   metadata {
     name      = "aws-auth"

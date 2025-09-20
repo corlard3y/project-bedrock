@@ -41,7 +41,6 @@ resource "aws_iam_role" "github_actions_oidc" {
   }
 }
 
-# Policy for Terraform actions (least privilege can be tightened)
 resource "aws_iam_role_policy" "github_actions_terraform_policy" {
   name = "${var.project_name}-terraform-policy"
   role = aws_iam_role.github_actions_oidc.id
@@ -86,7 +85,6 @@ resource "aws_iam_user_policy" "dev_readonly_policy" {
   })
 }
 
-# Optional: Create access key for dev user — WARNING: stored in state
 resource "aws_iam_access_key" "dev_readonly_key" {
   user = aws_iam_user.dev_readonly.name
   # You can output the secret access key - be careful

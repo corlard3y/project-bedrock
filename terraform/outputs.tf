@@ -96,11 +96,6 @@ output "dynamodb_sessions_table" {
   value       = aws_dynamodb_table.sessions.name
 }
 
-# ALB and Certificate Information (commented out for now)
-# output "certificate_arn" {
-#   description = "ARN of the SSL certificate"
-#   value       = aws_acm_certificate.main.arn
-# }
 
 output "route53_zone_id" {
   description = "Route 53 hosted zone ID"
