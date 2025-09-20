@@ -1,4 +1,3 @@
-# RDS Subnet Group
 resource "aws_db_subnet_group" "main" {
   name       = "${var.project_name}-db-subnet-group"
   subnet_ids = module.vpc.private_subnets
@@ -9,7 +8,6 @@ resource "aws_db_subnet_group" "main" {
   }
 }
 
-# Security Group for RDS
 resource "aws_security_group" "rds" {
   name_prefix = "${var.project_name}-rds-"
   vpc_id      = module.vpc.vpc_id
@@ -41,7 +39,6 @@ resource "aws_security_group" "rds" {
   }
 }
 
-# RDS MySQL for Catalog Service
 resource "aws_db_instance" "mysql" {
   identifier = "${var.project_name}-mysql"
 
@@ -52,7 +49,6 @@ resource "aws_db_instance" "mysql" {
   allocated_storage     = 20
   max_allocated_storage = 100
   storage_type          = "gp2"
-  storage_encrypted     = true
 
   db_name  = "catalog"
   username = "admin"
@@ -62,8 +58,8 @@ resource "aws_db_instance" "mysql" {
   db_subnet_group_name   = aws_db_subnet_group.main.name
 
   backup_retention_period = 7
-  backup_window           = "03:00-04:00"
-  maintenance_window      = "sun:04:00-sun:05:00"
+  backup_window          = "03:00-04:00"
+  maintenance_window     = "sun:04:00-sun:05:00"
 
   skip_final_snapshot = true
   deletion_protection = false
@@ -74,7 +70,6 @@ resource "aws_db_instance" "mysql" {
   }
 }
 
-# RDS PostgreSQL for Orders Service
 resource "aws_db_instance" "postgres" {
   identifier = "${var.project_name}-postgres"
 
@@ -85,7 +80,6 @@ resource "aws_db_instance" "postgres" {
   allocated_storage     = 20
   max_allocated_storage = 100
   storage_type          = "gp2"
-  storage_encrypted     = true
 
   db_name  = "orders"
   username = "postgres"
@@ -95,8 +89,8 @@ resource "aws_db_instance" "postgres" {
   db_subnet_group_name   = aws_db_subnet_group.main.name
 
   backup_retention_period = 7
-  backup_window           = "03:00-04:00"
-  maintenance_window      = "sun:04:00-sun:05:00"
+  backup_window          = "03:00-04:00"
+  maintenance_window     = "sun:04:00-sun:05:00"
 
   skip_final_snapshot = true
   deletion_protection = false

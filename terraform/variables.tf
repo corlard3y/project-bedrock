@@ -32,12 +32,10 @@ variable "mysql_password" {
   description = "Password for MySQL RDS instance"
   type        = string
   sensitive   = true
-  default     = "ProjectBedrock123!"
 }
 
 variable "postgres_password" {
   description = "Password for PostgreSQL RDS instance"
   type        = string
   sensitive   = true
-  default     = "ProjectBedrock123!"
 }

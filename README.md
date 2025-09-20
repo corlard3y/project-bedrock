@@ -14,9 +14,6 @@ I deployed the official [AWS Retail Store Sample App](https://github.com/aws-con
 **Infrastructure:**
 - EKS cluster (Kubernetes 1.32) with 2 nodes
 - VPC with public/private subnets
-- RDS PostgreSQL & MySQL (bonus)
-- DynamoDB tables (bonus)
-- ALB with SSL certificate (bonus)
 - CI/CD pipeline with GitHub Actions
 
 ## 🏗️ Architecture
@@ -44,9 +41,6 @@ project-bedrock/
 │   ├── vpc.tf          # VPC and networking
 │   ├── eks.tf          # EKS cluster
 │   ├── iam.tf          # IAM roles
-│   ├── rds.tf          # Managed databases
-│   ├── dynamodb.tf     # NoSQL database
-│   ├── alb-ingress.tf  # Load balancer
 │   └── policies/       # IAM policies
 ├── k8s/                # Kubernetes manifests
 │   ├── namespace.yaml  # Namespace
@@ -61,8 +55,7 @@ project-bedrock/
 │   ├── checkout-service.yaml # Checkout orchestration
 │   ├── ui-service.yaml       # Store frontend
 │   ├── rbac.yaml       # Developer access
-│   ├── deploy.sh       # Basic deployment
-│   └── deploy-with-bonus.sh  # Bonus features
+│   └── deploy.sh       # Deployment script
 ├── .github/workflows/  # CI/CD pipeline
 │   └── terraform-ci-cd.yml
 └── README.md
@@ -99,19 +92,6 @@ aws eks update-kubeconfig --region eu-west-1 --name project-bedrock-eks --profil
 - **Main Branch**: Automatic deployment
 - **Manual**: Destroy infrastructure (workflow_dispatch)
 
-## 🎁 Bonus Features
-
-**Managed Databases:**
-- RDS PostgreSQL for orders service
-- RDS MySQL for catalog service  
-- DynamoDB for carts and sessions
-- All with encryption and backups
-
-**ALB with SSL:**
-- AWS Load Balancer Controller
-- Application Load Balancer with SSL
-- Route 53 domain management
-- HTTPS with automatic redirect
 
 ## 📊 Current Status
 
@@ -124,6 +104,29 @@ aws eks update-kubeconfig --region eu-west-1 --name project-bedrock-eks --profil
 - ✅ Orders Service: 1/1 Running
 - ✅ Checkout Service: 1/1 Running
 - ✅ All Databases: MySQL, PostgreSQL, Redis, RabbitMQ
+
+## 🔐 Security
+
+**IMPORTANT:** Before deploying, set these environment variables:
+
+```bash
+export TF_VAR_mysql_password="YourSecureMySQLPassword123!"
+export TF_VAR_postgres_password="YourSecurePostgresPassword123!"
+```
+
+**Update Kubernetes secrets after deployment:**
+```bash
+kubectl create secret generic retail-store-secrets \
+  --from-literal=MYSQL_PASSWORD="password123" \
+  --from-literal=MYSQL_USER="root" \
+  --from-literal=POSTGRES_PASSWORD="password123" \
+  --from-literal=POSTGRES_USER="postgres" \
+  --from-literal=RABBITMQ_PASSWORD="password123" \
+  --from-literal=RABBITMQ_USER="admin" \
+  -n retail-store --dry-run=client -o yaml | kubectl apply -f -
+```
+
+See `SECURITY.md` for complete security guidelines.
 
 ## 🧹 Cleanup
 
@@ -140,12 +143,6 @@ terraform destroy
 - ✅ Developer read-only access configured
 - ✅ CI/CD pipeline functional
 
-**Bonus Features:**
-- ✅ RDS PostgreSQL and MySQL integrated
-- ✅ DynamoDB tables created and configured
-- ✅ ALB Ingress Controller installed
-- ✅ SSL certificate provisioned and attached
-- ✅ HTTPS enabled with automatic redirect
 
 ---
 

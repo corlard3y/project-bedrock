@@ -1,4 +1,3 @@
-# IAM Role for AWS Load Balancer Controller
 resource "aws_iam_role" "aws_load_balancer_controller" {
   name = "${var.project_name}-aws-load-balancer-controller"
 
@@ -27,13 +26,11 @@ resource "aws_iam_role" "aws_load_balancer_controller" {
   }
 }
 
-# Attach AWS Load Balancer Controller policy
 resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller" {
   policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/AWSLoadBalancerControllerIAMPolicy"
   role       = aws_iam_role.aws_load_balancer_controller.name
 }
 
-# Create the AWS Load Balancer Controller policy if it doesn't exist
 resource "aws_iam_policy" "aws_load_balancer_controller" {
   name        = "AWSLoadBalancerControllerIAMPolicy"
   description = "IAM policy for AWS Load Balancer Controller"
@@ -41,13 +38,11 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
   policy = file("${path.module}/policies/aws-load-balancer-controller-policy.json")
 }
 
-# Attach the custom policy
 resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_custom" {
   policy_arn = aws_iam_policy.aws_load_balancer_controller.arn
   role       = aws_iam_role.aws_load_balancer_controller.name
 }
 
-# Route 53 Hosted Zone (for demo purposes - you can use your own domain)
 resource "aws_route53_zone" "main" {
   name = "project-bedrock.local"
 
