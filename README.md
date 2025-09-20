@@ -5,11 +5,11 @@ I deployed the official [AWS Retail Store Sample App](https://github.com/aws-con
 ## 🚀 What I Built
 
 **Core Application:**
-- **UI Service** (Java): Store frontend with themes
-- **Catalog Service** (Go): Product catalog API with MySQL
-- **Orders Service** (Java): Order management with PostgreSQL  
-- **Checkout Service** (Node.js): Checkout orchestration with RabbitMQ
-- **Carts Service** (Java): Shopping cart with Redis
+- **UI Service**: Store frontend with themes
+- **Catalog Service**: Product catalog API with MySQL
+- **Orders Service**: Order management with PostgreSQL
+- **Checkout Service**: Checkout orchestration with RabbitMQ
+- **Carts Service**: Shopping cart with Redis
 
 **Infrastructure:**
 - EKS cluster (Kubernetes 1.32) with 2 nodes
@@ -100,33 +100,10 @@ aws eks update-kubeconfig --region eu-west-1 --name project-bedrock-eks --profil
 
 **All Services Running:**
 - ✅ UI Service: 1/1 Running
-- ✅ Catalog Service: 1/1 Running  
+- ✅ Catalog Service: 1/1 Running
 - ✅ Orders Service: 1/1 Running
 - ✅ Checkout Service: 1/1 Running
 - ✅ All Databases: MySQL, PostgreSQL, Redis, RabbitMQ
-
-## 🔐 Security
-
-**IMPORTANT:** Before deploying, set these environment variables:
-
-```bash
-export TF_VAR_mysql_password="YourSecureMySQLPassword123!"
-export TF_VAR_postgres_password="YourSecurePostgresPassword123!"
-```
-
-**Update Kubernetes secrets after deployment:**
-```bash
-kubectl create secret generic retail-store-secrets \
-  --from-literal=MYSQL_PASSWORD="password123" \
-  --from-literal=MYSQL_USER="root" \
-  --from-literal=POSTGRES_PASSWORD="password123" \
-  --from-literal=POSTGRES_USER="postgres" \
-  --from-literal=RABBITMQ_PASSWORD="password123" \
-  --from-literal=RABBITMQ_USER="admin" \
-  -n retail-store --dry-run=client -o yaml | kubectl apply -f -
-```
-
-See `SECURITY.md` for complete security guidelines.
 
 ## 🧹 Cleanup
 
